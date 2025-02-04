@@ -14,12 +14,10 @@ namespace FileSystemStorage.Services
     public class FileUploaderService : IFileService
     {
         private readonly IAmazonS3 _s3Client;
-        private readonly IAmazonDynamoDB _dynamoDbClient;
         private readonly DynamoDBService _dynamoDbService;
         private readonly AWSSettingsModel _awsSettings;
 
-        public FileUploaderService(IAmazonDynamoDB dynamoDbClient, IConfiguration configuration, 
-            IOptions<AWSSettingsModel> awsSettings, DynamoDBService dynamoDbService)
+        public FileUploaderService(IOptions<AWSSettingsModel> awsSettings, DynamoDBService dynamoDbService)
         {
             _dynamoDbService = dynamoDbService;
             _awsSettings = awsSettings.Value;
@@ -48,15 +46,15 @@ namespace FileSystemStorage.Services
         private async Task<string> Upload(Stream fileStream, string fileName)
         {
             using var sha256 = SHA256.Create();
-            using var hashingStream = new CryptoStream(Stream.Null, sha256, CryptoStreamMode.Write); // Hashing stream (dummy output)
+            using var hashingStream = new CryptoStream(Stream.Null, sha256, CryptoStreamMode.Write);
 
-            using var teeStream = new TeeStream(fileStream, hashingStream); // Copying to hash while reading
+            using var teeStream = new TeeStream(fileStream, hashingStream);
 
             var initiateRequest = new InitiateMultipartUploadRequest { BucketName = _awsSettings.BucketName, Key = fileName };
             var initResponse = await _s3Client.InitiateMultipartUploadAsync(initiateRequest);
 
             var partETags = new List<PartETag>();
-            const int partSize = 5 * 1024 * 1024; // 5MB chunk size
+            const int partSize = 5 * 1024 * 1024;
             var buffer = new byte[partSize];
             int bytesRead;
             int partNumber = 1;
@@ -95,7 +93,6 @@ namespace FileSystemStorage.Services
 
             string hashHex = BitConverter.ToString(sha256.Hash).Replace("-", "").ToLower();
 
-            //Console.WriteLine($"SHA-256 Hash: {hashHex}");
 
             return $"https://{_awsSettings.BucketName}.s3.amazonaws.com/{fileName}";
         }
@@ -113,13 +110,6 @@ namespace FileSystemStorage.Services
         {
             var response = await _s3Client.ListObjectsAsync(_awsSettings.BucketName);
             return response.S3Objects.Select(o => o.Key);
-        }
-
-        private static string ComputeSha256Hash(Stream input)
-        {
-            using var sha256 = SHA256.Create();
-            var hashBytes = sha256.ComputeHash(input);
-            return Convert.ToHexString(hashBytes);
         }
     }
 }

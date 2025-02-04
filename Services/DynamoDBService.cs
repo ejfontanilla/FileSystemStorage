@@ -21,7 +21,7 @@ namespace FileSystemStorage.Services
                 ServiceURL = _awsSettings.ServiceURL,  // Use LocalStack endpoint
             };
             _dynamoDbClient = new AmazonDynamoDBClient(_awsSettings.AccessKey, _awsSettings.SecretKey, dynamoDbConfig);
-            _table = Table.LoadTable(_dynamoDbClient, "Files");
+            _table = Table.LoadTable(_dynamoDbClient, _awsSettings.DynamoTableName);
         }
 
         public async Task StoreFileHashAsync(string fileName, byte[] hash)
