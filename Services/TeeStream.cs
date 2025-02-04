@@ -21,12 +21,8 @@
             return bytesRead;
         }
 
-        public override int Read(byte[] buffer, int offset, int count)
-        {
-            return 0;
-        }
-
         // Required overrides (forward to _source)
+        public override int Read(byte[] buffer, int offset, int count) => 0;
         public override bool CanRead => _source.CanRead;
         public override bool CanSeek => false; // No seeking possible
         public override bool CanWrite => false;

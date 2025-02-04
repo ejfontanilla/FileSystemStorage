@@ -26,7 +26,6 @@ namespace FileSystemStorage.Controllers
             if (file == null || file.Length == 0)
                 return BadRequest("Invalid file.");
 
-            //string fileUrl = await _fileMultipartUploadService.UploadFileAsync(file);
             string fileUrl = await _fileService.UploadFileAsync(file);
             return Ok(new { Message = "File uploaded successfully", FileUrl = fileUrl });
         }
