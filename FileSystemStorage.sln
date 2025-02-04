@@ -5,7 +5,12 @@ VisualStudioVersion = 17.8.34408.163
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileSystemStorage", "FileSystemStorage.csproj", "{60B7A6D0-6355-40EA-819A-4E17CFC80BFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSystemStorageTests", "..\FileSystemStorageTests\FileSystemStorageTests.csproj", "{BB902479-A7C6-4E73-94FE-A11EC1EBEC1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileSystemStorageTests", "..\FileSystemStorageTests\FileSystemStorageTests.csproj", "{BB902479-A7C6-4E73-94FE-A11EC1EBEC1A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5080526B-51A3-4256-AEA8-558602AB0114}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Downloads\sf-backend-test-assignment\sf-backend-test-assignment\init-scripts\init.sh = ..\..\..\Downloads\sf-backend-test-assignment\sf-backend-test-assignment\init-scripts\init.sh
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
