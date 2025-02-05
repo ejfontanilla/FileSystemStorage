@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  localstack:
+    image: localstack/localstack
+    container_name: localstack
+    ports:
+      - "4566:4566"
+    environment:
+      - DATA_DIR=/tmp/localstack
+      - SERVICES=s3,dynamodb
+      - AWS_ACCESS_KEY_ID=mock
+      - AWS_SECRET_ACCESS_KEY=mock
+      - DEFAULT_REGION=us-east-1
+    volumes:
+      - "./localstack_data:/tmp/localstack"
+
+  filesystemstorage:
+    build: .
+    container_name: filesystemstorage
+    ports:
+      - "5000:5000"
+    environment:
+      - AWS_SERVICE_URL=http://localstack:4566
+    depends_on:
+      - localstack
